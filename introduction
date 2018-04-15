@@ -1,0 +1,81 @@
+一、函数：
+1：
+int Setting_Parameter(int question_num, int sup,Parameter argument)
+2：
+int Generate(int setting_error)
+
+二、函数调用方法：
+函数1 ：
+Setting_Parameter用于接受参数
+1.question_num为生成的题目数量（>0）
+2.sup为生成的数的上限（>=5）
+3.argument为Parameter结构体，包含是否支持整数、小数、分数，操作符的选择：
+ 
+ integer = 1;  //支持 整数 生成则为1，不支持则为0，默认为支持
+ decimal = 0;  //支持 小数 生成则为1，不支持则为0，默认为不支持
+ fraction = 0; //支持 分数 生成则为1，不支持则为0，默认为不支持
+ add = 1;      //支持 加法 符号生成则为1，不支持则为0，默认为支持
+ sub = 1;      //支持 减法 符号生成则为1，不支持则为0，默认为支持
+ multiply = 1; //支持 乘法 符号生成则为1，不支持则为0，默认为支持
+ division = 1; //支持 除法 符号生成则为1，不支持则为0，默认为支持
+ pow = 0;      //支持 乘方 符号生成则为1，不支持则为0，默认为不支持
+ bracktet = 1支持 括号 符号生成则为1，不支持则为0，默认为支持
+
+4.参数接受成功返回1，否则返回-1。需要将返回的数代入Generate中。
+
+函数2 ：
+Generate接受Setting_Parameter返回值，若不为-1则开始生成对应题目，生成成功打印出success且生成result.txt和key.txt并且函数返回1。若参数输入有误则打印出error xxx 并且不执行Generate。
+小数方面生成的和结果都是两位，分数有带分数
+
+（水平不高，还望各位遵守参数输入规则并且定义两个变量接受两个函数返回值，虽然加了一定的检测，但是难保不出问题。）
+
+
+
+
+三、调用dll方法（仅供参考）：
+Qt：1.将对应版本（x86或x64）.lib .h放到程序当前目录下，将.dll放在程序输出目录。
+    2.在自己工程中头文件-添加-现有： Core_x86.h 或 Core_x64.h
+    3.在主函数中写入 （以x64为例）
+    #include"Core_x64.h" 
+    #pragma comment(lib,"C:\xxx\xx\Core_x64.lib")   //此处需要正确的Core_x86.lib所在绝对路径
+    4.按上述方法调用两个函数。
+    5.注意x86与x64的问题
+VS:1.将.lib .h .dll复制到当前工程下 如：C：\hw1\test\test   且result.txt和key.txt也生成在该目录下
+    2.在自己工程中头文件-添加-现有： Core_x86.h 或 Core_x64.h
+    3.在主函数中写入 
+    #include"Core_x64.h" 
+    #pragma comment(lib,"Core_x64.lib")   //若显示连接lib失败则尝试正确的Core_x86.lib所在绝对路径
+    4.按上述方法调用两个函数。
+    5.注意x86与x64的问题，此dll为x64
+
+
+Eg. 生成20道上限为10的、支持整数分数的、包含加减乘除括号的题目：
+#include<stdio.h>
+#include"Core_x64.h" 
+#pragma comment(lib,"Core_x64.lib")
+int main()
+{
+	
+	int error = 0, error1 = 0;//接受两个函数的返回值
+	Parameter argu;    //Parameter结构体类型
+	argu.integer = 1;  //支持整数
+	argu.fraction = 1; //支持分数
+	argu.decimal = 0;  //不支持小数
+	argu.add = 1;      //支持加法
+	argu.sub = 1;      //支持减法
+	argu.multiply = 1; //支持乘法
+	argu.division = 1; //支持除法
+	argu.pow = 0;      //不支持乘方
+	argu.bracktet = 1; //支持括号
+	error=Setting_Parameter(20,10, argu);//error接受Setting_Parameter函数的返回值
+	error1=Generate(error);    //将error传入Generate函数，并用error1接受该函数返回值
+	
+}
+四、其它
+由于技术水平不高，所以对接过程中可能出现问题，望各位包容联系。
+
+联系方式:王亚正、王泽友
+    
+
+                                                                           
+   
